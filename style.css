@@ -3,13 +3,12 @@
 }
 
 body {
-    background-color: #c7cfd6;
+    background-color: #062441;
 }
 
 #main-div {
-    background-color: #072d50;
-    border: 3px solid #a7bacc;
-    /* border-radius: 20px; */
+    background-color: #062441;
+    border: 2px solid #a7bacc;
     margin: 10px auto;
     width: 550px;
     font-family: 'Segoe UI';
@@ -32,17 +31,28 @@ body {
 #password-input {
     border: none;
     color: black;
+    height: 17px;
+}
+
+#password-input::selection{
+    background-color: #0556A3;
+    color: #FEFEFE
 }
 
 #password-button {
     background-color: #0556A3;
-    border-radius: 5px;
+    height: 20px;
+    border-radius: 3px;
     border: none;
 }
 
 #password-button:active {
     background-color: white;
     color: #0556A3;
+}
+
+#password-button:hover {
+    cursor: pointer;
 }
 
 .confirm-message {

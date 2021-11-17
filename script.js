@@ -69,7 +69,7 @@ function createSugestion(text='') {
             sugestion = insert(
                 sugestion,
                 getRandomElementFromArray(rules['lowercase']),
-                0
+                1
             );
         }
         else {

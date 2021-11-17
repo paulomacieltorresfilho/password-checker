@@ -106,7 +106,18 @@ function createSugestion(text='') {
 
     
     if (rulesCount['symbols'] == 0) {
-        
+        let insertIndex;
+        for (let i = 0; i < sugestion.length; i++) {
+            if (rules['lowercase'].includes(sugestion[i]) && !rules['lowercase'].includes(sugestion[i+1])) {
+                insertIndex = i+1;
+                break;
+            }
+        }
+        sugestion = insert(
+            sugestion,
+            getRandomElementFromArray(rules['symbols']),
+            insertIndex
+        );
     }
 
     if (rulesCount['algarisms'] == 0) {

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel= "stylesheet" href= "style.css" >
+    <title>Password</title>
+</head>
+<body>
+    <div id="main-div">
+        <div class="first-line">
+            <div id="password-div">
+                <label id="password-label">senha:</label>
+                <input id="password-input" type="text" placeholder="ex. Paulinho_19"></input>
+                <button id="password-button" onclick="verifyPassword()" type="submit">confirmar</button>
+            </div>
+            <div class="confirm-message">
+                <label></label>
+            </div>
+        </div>
+        <div id= "error-div">
+            <div class= "message">
+                <label id="message-label">A senha deve conter:</label>
+                <ul id="message-list">
+                    <li>ao mínimo 6 caracteres</li>
+                    <li>um caracter maiúsculo</li>
+                    <li>um caracter minúsculo</li>
+                    <li>um algarismo</li>
+                    <li>um símbolo (eg. ~ ` [ _ )</li>
+                </ul>
+            </div>
+            <div class= "message" id= "sugestion-div">
+                <label id="sugestion-label">Algumas sugestões:</label>
+                <ul id="sugestion-list">
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

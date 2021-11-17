@@ -1,0 +1,107 @@
+* {
+    color: #FEFEFE;
+}
+
+body {
+    background-color: #c7cfd6;
+}
+
+#main-div {
+    background-color: #072d50;
+    border: 3px solid #a7bacc;
+    /* border-radius: 20px; */
+    margin: 10px auto;
+    width: 550px;
+    font-family: 'Segoe UI';
+    font-size: 15px;
+}
+
+.first-line {
+    display: flex;
+}
+
+#password-div {
+    margin: 5px 0 5px 5%;
+    font-size: 18px;
+}
+
+#password-label {
+    font-size: 16px;
+}
+
+#password-input {
+    border: none;
+    color: black;
+}
+
+#password-button {
+    background-color: #0556A3;
+    border-radius: 5px;
+    border: none;
+}
+
+#password-button:active {
+    background-color: white;
+    color: #0556A3;
+}
+
+.confirm-message {
+    margin: auto;
+    font-size: 13px;
+    float: left;
+    text-align: center;
+}
+
+#error-div {
+    display: flex;
+}
+
+.message {
+    margin: 5px 5%;
+    width: 45%;
+    flex: 1;
+}
+
+#sugestion-div {
+    visibility: hidden;
+}
+
+#message-label, #sugestion-label {
+    margin-bottom: 1px;
+}
+
+#message-list, #sugestion-list {
+    margin-top: 1px;
+}
+
+.valid-password {
+    animation: valid 0.7s linear;
+}
+
+.invalid-password {
+    animation: invalid 0.7s linear;
+}
+
+@keyframes valid {
+    0% {
+        background-color: white;
+    }
+    50% {
+        background-color: #88EFA1;
+    }
+    100% {
+        background-color: white;
+    }
+}
+
+@keyframes invalid {
+    0% {
+        background-color: white;
+    }
+    50% {
+        background-color: #F38A8A;
+    }
+    100% {
+        background-color: white;
+    }
+}

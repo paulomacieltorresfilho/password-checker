@@ -1,28 +1,28 @@
 // Caracteres que precisam ter pelo menos um na criação da senha 
 const rules = { 
     uppercase : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 
-    lowercase : 'abcdefghijklimnopqrstuvwxyz', 
+    lowercase : 'abcçdefghijklimnopqrstuvwxyz', 
     algarisms : '01234156789', 
     symbols : '!"#$%&\'()*+,-./\\:;<=>?@[]{}^_`´~°|' 
 }; 
-const minLength = 6;
+const minLength = 6; // tamanho mínimo que a senha deve possuir
 
 // Elementos do index.html
 const textInput = document.getElementById('password-input');
 const confirmLabel = document.getElementsByClassName('confirm-message')[0];
 const sugestionList = document.getElementById('sugestion-list').getElementsByTagName("li");       
 
-// Lista de regras que não foram implementadas 
-let rulesCount = {}; 
+
+let rulesCount = {}; // objeto com a contagem das vezes que a regra apareceu na senha
 let password = ''; 
 
-// Verifica se a senha digitada segue todas as regras impostas,
-// caso contrário, aparecerá algumas sugestões para o usuário
+// Função chamada quando o usuário clica no 'confirmar'
+// Se a senha for inválida, mostra algumas sugestões ao usuário
 function verifyPassword() {
     password = textInput.value;
     countRules();
 
-    // Senha válida
+    // Caso a senha seja válida
     if (Object.values(rulesCount).every(item => item > 0)) { 
         // Confirmação visual da senha
         textInput.classList.add('valid-password');
@@ -32,9 +32,8 @@ function verifyPassword() {
         confirmLabel.innerHTML = 'senha cadastrada com sucesso!';
     }
 
-    // Senha inválida
+    // Caso a senha seja inválida
     else { 
-
         // Confirmação visual da senha
         textInput.classList.add('invalid-password');
         setTimeout(function () {
@@ -44,14 +43,14 @@ function verifyPassword() {
         
         // Criar e mostrar lista de sugestões
         for (let i = 0; i < sugestionList.length; i++) {
-            sugestionList[i].innerHTML = createSugestion(password);
+            sugestionList[i].innerHTML = createSuggestion(password);
         }
         document.getElementById('sugestion-div').style.visibility = 'visible';
     }
 }
 
-// Faz a verificação de cada regra e retorna true se a senha
-// seguir todas as regras e false caso não
+// Função que faz a contagem de quantas vezes certa regra
+// apareceu na senha fornecida e armazena a contagem no objeto rulesCount
 function countRules() {
     rulesCount = {};
     for (let key in rules) {
@@ -60,8 +59,9 @@ function countRules() {
     password.length < minLength ? rulesCount['length'] = 0 : rulesCount['length'] = 1;
 }
 
-// TODO
-function createSugestion(text='') {
+// Função que cria a sugestão de senha baseada na senha fornecida
+// Adiciona os caracteres das regras que não foram seguidas e coloca-os em ordem
+function createSuggestion(text='') {
     let suggestion = text;
     
     if (rulesCount['uppercase'] == 0) {
@@ -111,7 +111,8 @@ function createSugestion(text='') {
         } 
     }
 
-    // TODO: write all possibilities
+    // Ordena a sugestão da seguinte forma:
+    // maiúsculas-minúsculas-símbolos-algarismos
     suggestion = suggestion.split('').sort(function(a, b) {
         // Uppercase:
         if (rules['uppercase'].includes(a) && rules['uppercase'].includes(b)) return 0;
@@ -136,13 +137,8 @@ function createSugestion(text='') {
     return suggestion;
 }
 
-textInput.addEventListener("keyup", event => {
-    if (event.key === 'Enter') {
-        verifyPassword();
-    }
-})
-
-
+// Conta quantas similaridades existe entre duas strings,
+// no caso, entre alguma regra e a senha fornecida
 function countSimilarities(string1, string2) {
     count = 0;
     for (let i = 0; i < string1.length; i++) {
@@ -155,4 +151,12 @@ function countSimilarities(string1, string2) {
     return count;
 } 
 
+// Pega um elemento aleatório de um array
 const getRandomElementFromArray = (arr) => arr[Math.floor(Math.random() * arr.length)]; 
+
+// Chama a senha verifyPassword() caso o usuário aperte ENTER
+textInput.addEventListener("keyup", event => {
+    if (event.key === 'Enter') {
+        verifyPassword();
+    }
+})

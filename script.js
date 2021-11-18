@@ -5,6 +5,7 @@ const rules = {
     algarisms : '01234156789', 
     symbols : '!"#$%&\'()*+,-./\\:;<=>?@[]{}^_`´~°|' 
 }; 
+const minLength = 6;
 
 // Elementos do index.html
 const textInput = document.getElementById('password-input');
@@ -56,28 +57,37 @@ function countRules() {
     for (let key in rules) {
         rulesCount[key] = countSimilarities(rules[key], password);
     }
-    password.length < 6 ? rulesCount['length'] = 0 : rulesCount['length'] = 1;
+    password.length < minLength ? rulesCount['length'] = 0 : rulesCount['length'] = 1;
 }
 
 // TODO
 function createSugestion(text='') {
-    let sugestion = text;
+    let suggestion = text;
     
-    // Caso não possua letras minúsculas
+    if (rulesCount['uppercase'] == 0) {
+        if (rulesCount['lowercase'] <= 1) {
+            suggestion += getRandomElementFromArray(rules['uppercase']);
+        }
+        else {
+            for (let i = 0; i < suggestion.length; i++) {
+                if (rules['lowercase'].includes(suggestion.charAt(i))) {
+                    suggestion = suggestion.slice(0, i) + suggestion.charAt(i).toUpperCase() + suggestion.slice(i+1);
+                    break;
+                }
+            }
+        }
+    }
+
     if (rulesCount['lowercase'] == 0) {
-        if (rulesCount['uppercase'] <= 1) {
-            sugestion = insert(
-                sugestion,
-                getRandomElementFromArray(rules['lowercase']),
-                1
-            );
+        if (rulesCount['uppercase'] < 2) {
+            suggestion += getRandomElementFromArray(rules['lowercase']);
         }
         else {
             let first = true;
-            for (let i = 0; i < sugestion.length; i++) {
-                if (rules['uppercase'].includes(sugestion.charAt(i))) {
+            for (let i = 0; i < suggestion.length; i++) {
+                if (rules['uppercase'].includes(suggestion.charAt(i))) {
                     if (!first) {
-                        sugestion = sugestion.slice(0, i) + sugestion.charAt(i).toLowerCase() + sugestion.slice(i+1);
+                        suggestion = suggestion.slice(0, i) + suggestion.charAt(i).toLowerCase() + suggestion.slice(i+1);
                     } else {
                         first = false;
                     }
@@ -85,51 +95,45 @@ function createSugestion(text='') {
             }
         }
     }
-    //  Caso não possua letras maiúsculas
-    if (rulesCount['uppercase'] == 0) {
-        if (rulesCount['lowercase'] <= 1) {
-            sugestion = insert(
-                sugestion,
-                getRandomElementFromArray(rules['uppercase']),
-                0
-            );
-        }
-        else {
-            for (let i = 0; i < sugestion.length; i++) {
-                if (rules['lowercase'].includes(sugestion.charAt(i))) {
-                    sugestion = sugestion.slice(0, i) + sugestion.charAt(i).toUpperCase() + sugestion.slice(i+1);
-                    break;
-                }
-            }
-        }
-    }
 
-    
     if (rulesCount['symbols'] == 0) {
-        let insertIndex;
-        for (let i = 0; i < sugestion.length; i++) {
-            if (rules['lowercase'].includes(sugestion[i]) && !rules['lowercase'].includes(sugestion[i+1])) {
-                insertIndex = i+1;
-                break;
-            }
-        }
-        sugestion = insert(
-            sugestion,
-            getRandomElementFromArray(rules['symbols']),
-            insertIndex
-        );
+        suggestion += getRandomElementFromArray(rules['symbols']);
     }
 
     if (rulesCount['algarisms'] == 0) {
-        
+        suggestion += getRandomElementFromArray(rules['algarisms'])
     }
 
 
     if (rulesCount['length'] == 0) {
-        
+        while (suggestion.length < 6) {
+            suggestion += getRandomElementFromArray(rules['lowercase']);
+        } 
     }
 
-    return sugestion;
+    // TODO: write all possibilities
+    suggestion = suggestion.split('').sort(function(a, b) {
+        // Uppercase:
+        if (rules['uppercase'].includes(a) && rules['uppercase'].includes(b)) return 0;
+        if (rules['uppercase'].includes(a)) return -1;
+        if (rules['uppercase'].includes(b)) return 1;
+        
+        // Lowercase:
+        if (rules['lowercase'].includes(a) && rules['lowercase'].includes(b)) return 0;
+        if (rules['lowercase'].includes(a)) return -1;
+        if (rules['lowercase'].includes(b)) return 1;
+
+        // Symbols
+        if (rules['symbols'].includes(a) && rules['symbols'].includes(b)) return 0;
+        if (rules['symbols'].includes(a)) return -1;
+        if (rules['symbols'].includes(b)) return 1;
+        
+        // Algarisms
+        if (rules['algarisms'].includes(a) && rules['algarisms'].includes(b)) return 0;
+
+    }).join('');
+    
+    return suggestion;
 }
 
 textInput.addEventListener("keyup", event => {
@@ -151,5 +155,4 @@ function countSimilarities(string1, string2) {
     return count;
 } 
 
-const insert = (string, element, index) => string.substring(0, index) + element + string.substring(index, string.length);
 const getRandomElementFromArray = (arr) => arr[Math.floor(Math.random() * arr.length)]; 
